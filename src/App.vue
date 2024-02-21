@@ -27,8 +27,11 @@
 					<span><input type="radio" value="Outro" v-model="produto"> Outro</span>
 				</Rotulo>
 				<Rotulo nome="Prioridade">
-					<select name="" id="">
-						<option></option>
+					<select v-model="prioridade">
+						<option v-for="prioridade in prioridades" :key="prioridade.codigo" :value="prioridade.codigo"
+							:selected="prioridade.codigo === 1">
+							{{ prioridade.nome }}
+						</option>
 					</select>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
@@ -37,6 +40,7 @@
 				<hr>
 				<button>Enviar</button>
 			</form>
+			<!--  -------------------------------------------  -->
 			<div class="painel">
 				<div class="cabecalho">Resultado</div>
 				<Rotulo nome="E-mail">
@@ -62,7 +66,7 @@
 					<span>{{ produto }}</span>
 				</Rotulo>
 				<Rotulo nome="Prioridade">
-					<span>???</span>
+					<span>{{ prioridade }} -- {{ prioridade_extenso }}</span>
 				</Rotulo>
 				<Rotulo nome="Primeira Reclamação?">
 					<span>???</span>
@@ -79,11 +83,23 @@ import Escolha from './components/Escolha.vue'
 export default {
 	name: 'app',
 	components: { Rotulo, Escolha },
+	computed: {
+		prioridade_extenso() {
+			return this.prioridades.find(p => p.codigo === this.prioridade).nome
+		}
+	},
 	data() {
 		return {
 			mensagem: '',
 			caracteristicas: [],
 			produto: 'Web',
+			prioridade: 1,
+			prioridades: [
+				{ codigo: 1, nome: 'Baixa' },
+				{ codigo: 2, nome: 'Média' },
+				{ codigo: 3, nome: 'Alta' },
+				{ codigo: 4, nome: 'Padrão GTIC' },
+			],
 			usuario: {
 				email: '',
 				senha: '',
